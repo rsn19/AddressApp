@@ -14,6 +14,7 @@ import ch.makery.address.model.Person;
 import ch.makery.address.model.PersonListWrapper;
 import ch.makery.address.view.PersonEditDialogController;
 import ch.makery.address.view.PersonOverviewController;
+import ch.makery.address.view.RootLayoutController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -88,14 +89,23 @@ public class MainApp extends Application {
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             primaryStage.show();
+            
+            
+         // Give the controller access to the main app.
+            RootLayoutController controller = loader.getController();
+            controller.setMainApp(this);
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+     // Try to load last opened person file.
+        File file = getPersonFilePath();
+        if (file != null) 
+            loadPersonDataFromFile(file);
     }
 
-    /**
-     * Shows the person overview inside the root layout.
-     */
+    
     /**
      * Shows the person overview inside the root layout.
      */
