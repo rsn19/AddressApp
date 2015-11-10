@@ -2,6 +2,7 @@ package ch.makery.address.control;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.prefs.Preferences;
 
 import javax.xml.bind.JAXBContext;
@@ -59,31 +60,32 @@ public class MainApp extends Application {
      * Returns the data as an observable list of Persons. 
      * @return
      */
-    public ObservableList<Person> getPersonData() {
+    public ObservableList<Person> getPersonData(){
         return personData;
     }
 
     // ... THE REST OF THE CLASS ...
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws InvocationTargetException {
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("AddressApp");
-        this.primaryStage.getIcons().add(new Image("file:resources/images/addressbook_icon.png"));
-        
-        initRootLayout();
+      
+      this.primaryStage.setTitle("AddressApp");
+      this.primaryStage.getIcons().add(new Image("file:resources/images/AddressApp.png"));
+      
+      initRootLayout();
 
-        showPersonOverview();
+      showPersonOverview();
     }
 
-    /**
+    /*
      * Initializes the root layout.
      */
-    public void initRootLayout() {
+    public void initRootLayout() throws InvocationTargetException{
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("../view/RootLayout.fxml"));
+            loader.setLocation(MainApp.class.getResource("/ch/makery/address/view/RootLayout.fxml"));
             rootLayout = (BorderPane) loader.load();
 
             // Show the scene containing the root layout.
@@ -114,7 +116,7 @@ public class MainApp extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("../view/PersonOverview.fxml"));
+            loader.setLocation(MainApp.class.getResource("/ch/makery/address/view/PersonOverview.fxml"));
             AnchorPane personOverview = (AnchorPane) loader.load();
 
             // Set person overview into the center of root layout.
@@ -152,7 +154,7 @@ public class MainApp extends Application {
         try {
             // Load the fxml file and create a new stage for the popup dialog.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("../view/PersonEditDialog.fxml"));
+            loader.setLocation(MainApp.class.getResource("/ch/makery/address/view/PersonEditDialog.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
 
             // Create the dialog Stage.
@@ -270,7 +272,7 @@ public class MainApp extends Application {
         try {
             // Load the fxml file and create a new stage for the popup.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("../view/BirthdayStatistics.fxml"));
+            loader.setLocation(MainApp.class.getResource("/ch/makery/address/view/BirthdayStatistics.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Birthday Statistics");
