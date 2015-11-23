@@ -4,6 +4,8 @@ package ch.makery.address.view;
 
 import org.controlsfx.dialog.Dialogs;
 
+import com.sun.glass.ui.Screen;
+
 import ch.makery.address.model.Person;
 import ch.makery.address.util.DateUtil;
 import javafx.fxml.FXML;
@@ -30,7 +32,7 @@ public class PersonEditDialogController {
     @FXML
     private TextField birthdayField;
 
-
+    private static double TAMANO_PANTALLA=Screen.getMainScreen().getHeight();
     private Stage dialogStage;
     private Person person;
     private boolean okClicked = false;
@@ -41,6 +43,7 @@ public class PersonEditDialogController {
      */
     @FXML
     private void initialize() {
+    	
     }
 
     /**
@@ -50,6 +53,10 @@ public class PersonEditDialogController {
      */
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
+        this.dialogStage.setHeight(TAMANO_PANTALLA);
+        this.dialogStage.centerOnScreen();
+        this.dialogStage.setResizable(false);
+        
     }
 
     /**
