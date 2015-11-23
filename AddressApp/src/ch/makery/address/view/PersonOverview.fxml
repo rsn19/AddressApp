@@ -54,7 +54,7 @@
                         <Label fx:id="birthdayLabel" styleClass="label-bright" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                      </children>
                   </GridPane>
-                  <HBox layoutX="123.0" layoutY="252.0" spacing="5.0">
+                  <HBox layoutX="123.0" layoutY="252.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0">
                      <children>
                         <Button layoutX="113.0" layoutY="259.0" mnemonicParsing="false" onAction="#handleNewPerson" text="New" />
                         <Button layoutX="165.0" layoutY="259.0" mnemonicParsing="false" onAction="#handleEditPerson" text="Edit..." />
