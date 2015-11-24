@@ -2,14 +2,24 @@ package ch.makery.address.view;
 
 
 
+import java.time.LocalDate;
+
 import org.controlsfx.dialog.Dialogs;
 
 import com.sun.glass.ui.Screen;
 
 import ch.makery.address.model.Person;
-import ch.makery.address.util.DateUtil;
+import ch.makery.address.util.DateUtil;import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.shape.Ellipse;
 import javafx.stage.Stage;
 
 /**
@@ -18,7 +28,13 @@ import javafx.stage.Stage;
  * @author Marco Jakob
  */
 public class PersonEditDialogController {
-
+    /**
+     * param ceiling el efecto onda sobre la imagen
+     */
+	private Ellipse ceiling;
+	@FXML
+	private ImageView imageViewEinstein;
+	private ImageView ceiling_image;
     @FXML
     private TextField firstNameField;
     @FXML
@@ -30,12 +46,16 @@ public class PersonEditDialogController {
     @FXML
     private TextField cityField;
     @FXML
-    private TextField birthdayField;
+    private DatePicker birthdayField;
 
+    @FXML
+    private BorderPane mainBorderPane;
+    
     private static double TAMANO_PANTALLA=Screen.getMainScreen().getHeight();
     private Stage dialogStage;
     private Person person;
     private boolean okClicked = false;
+
 
     /**
      * Initializes the controller class. This method is automatically called
@@ -43,9 +63,25 @@ public class PersonEditDialogController {
      */
     @FXML
     private void initialize() {
+    	System.out.println(mainBorderPane.getChildren().size());
+    	System.out.println(mainBorderPane.getChildren().get(1).toString());
+    	imageViewEinstein.setEffect(new GaussianBlur(10));
+    	initializeCeiling(mainBorderPane);
+    	imageViewEinstein.setClip(ceiling);
     	
+
     }
 
+    
+    private void initializeCeiling(BorderPane root) {
+        ceiling = new Ellipse();
+        ceiling.centerXProperty().bind(root.widthProperty().multiply(0.35));
+        ceiling.centerYProperty().bind(root.heightProperty().multiply(0.1));
+        ceiling.radiusXProperty().bind(root.widthProperty().multiply(0.5));
+        ceiling.radiusYProperty().bind(root.heightProperty().multiply(0.25));
+    }
+    
+    
     /**
      * Sets the stage of this dialog.
      * 
@@ -72,8 +108,9 @@ public class PersonEditDialogController {
         streetField.setText(person.getStreet());
         postalCodeField.setText(Integer.toString(person.getPostalCode()));
         cityField.setText(person.getCity());
-        birthdayField.setText(DateUtil.format(person.getBirthday()));
-        birthdayField.setText("dd.mm.yyyy");
+        birthdayField.setOnAction(e->{
+        	person.setBirthday(birthdayField.getValue());
+        });
     }
 
     /**
@@ -96,7 +133,7 @@ public class PersonEditDialogController {
             person.setStreet(streetField.getText());
             person.setPostalCode(Integer.parseInt(postalCodeField.getText()));
             person.setCity(cityField.getText());
-            person.setBirthday(DateUtil.parse(birthdayField.getText()));
+            person.setBirthday(birthdayField.getValue());
 
             okClicked = true;
             dialogStage.close();
@@ -144,12 +181,8 @@ public class PersonEditDialogController {
             errorMessage += "No valid city!\n"; 
         }
 
-        if (birthdayField.getText() == null || birthdayField.getText().length() == 0) {
-            errorMessage += "No valid birthday!\n";
-        } else {
-            if (!DateUtil.validDate(birthdayField.getText())) {
-                errorMessage += "No valid birthday. Use the format dd.mm.yyyy!\n";
-            }
+        if ( birthdayField.getValue() == null){
+        	errorMessage += "Mete una fecha\n"; 
         }
 
         if (errorMessage.length() == 0) {

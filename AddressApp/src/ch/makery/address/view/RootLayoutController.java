@@ -104,7 +104,7 @@ public class RootLayoutController {
         Dialogs.create()
             .title("AddressApp")
             .masthead("About")
-            .message("Author: Miguel Halys \nWebsite: http://facebook.com")
+            .message("Author: Miguel Halys \nWebsite: https://github.com/migueldam91")
             .showInformation();
     }
 

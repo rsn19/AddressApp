@@ -2,6 +2,16 @@
     -fx-background-color: #1d1d1d;
 }
 
+.rootPane {
+	
+    -fx-background-image: url('../images/wood.jpg');
+}
+
+.panelPrueba {
+	-fx-background-color: #d1f1c1;
+	-fx-background-image: url("../images/silk.jpg");
+	
+}
 .label {
     -fx-font-size: 11pt;
     -fx-font-family: "Segoe UI Semibold";

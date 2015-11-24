@@ -13,7 +13,14 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.effect.Bloom;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -26,6 +33,13 @@ import ch.makery.address.control.MainApp;
 import ch.makery.address.model.Person;
 import ch.makery.address.util.DateUtil;
 
+/**
+ * Controlador de la clase PersonOverview.
+ * 
+ * @author Miguel Halys
+ * @author https://github.com/migueldam91
+ * @version 1.0
+ */
 public class PersonOverviewController {
 	@FXML
 	private TableView<Person> personTable;
@@ -34,6 +48,15 @@ public class PersonOverviewController {
 	@FXML
 	private TableColumn<Person, String> lastNameColumn;
 
+	/**
+	 * param rect,str,sctr variables necesarias para la animación
+	 * 
+	 */
+	private Rectangle rect;
+	private SequentialTransition str;
+	private ScaleTransition sctr;
+	private RotateTransition rottr;
+	private FillTransition fltr;
 	@FXML
 	private Label firstNameLabel;
 	@FXML
@@ -49,9 +72,6 @@ public class PersonOverviewController {
 
 	@FXML
 	private SplitPane mainSplitPane;
-
-	// Object to be created
-	public SequentialTransitionEx stex;
 
 	// Reference to the main application.
 	private MainApp mainApp;
@@ -74,32 +94,21 @@ public class PersonOverviewController {
 		// Initialize the person table with the two columns.
 		firstNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
 		lastNameColumn.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
-
 		showPersonDetails(null);
-
 		personTable.getSelectionModel().selectedItemProperty()
 				.addListener((observable, oldValue, newValue) -> showPersonDetails(newValue));
-
+		Pane panelPrueba = (Pane) mainSplitPane.getItems().get(1).lookup("#panelPrueba");
+		
+		//Cojo el panel de la derecha,  hijo del splitpane.
 		System.out.println(mainSplitPane.getItems().toString());
 		System.out.println(mainSplitPane.getItems().get(1).getId());
-		Pane panelPrueba = (Pane) mainSplitPane.getItems().get(1).lookup("#panelPrueba");
 
-		// Instance and generate the rectangle
-		Rectangle rect = drawRectangle(Color.ALICEBLUE);
-		RotateTransition rottr = setRotateTransition(rect);
-		// Method to resize in an animation the rectangle
-		ScaleTransition sctr = new ScaleTransition(Duration.millis(3000), rect);
-		sctr.setByX(1);
-		sctr.setByY(1);
-		sctr.setCycleCount(1);
-		sctr.setAutoReverse(true);
-		// Method to recolor in an animation the rectangle
-		FillTransition fltr = new FillTransition(Duration.millis(2000), rect, Color.CADETBLUE, Color.DIMGREY);
-		fltr.setCycleCount(2);
-		fltr.setAutoReverse(true);
-
-		SequentialTransition str = new SequentialTransition();
 		
+		rect = drawRectangle(Color.ALICEBLUE);
+		rottr = getRotateTransition(rect, 500);
+		sctr = getScaleTranstion(300, rect);
+		fltr = getFillTransition(0, rect, Color.AQUA, Color.BISQUE);
+		str = new SequentialTransition();
 		str.getChildren().addAll(rottr, sctr, fltr);
 		panelPrueba.getChildren().add(rect);
 		
@@ -108,12 +117,10 @@ public class PersonOverviewController {
 		panelPrueba.getChildren().get(0).setLayoutY(-tamanioYpanelPrueba);
 		panelPrueba.getChildren().get(0).setLayoutX(-tamanioXpanelPrueba);
 
-		panelPrueba.getOnMouseClicked();
-		str.play();
+		// panelPrueba.getOnMouseClicked();
+		// str.play();
 
 	}
-	
-	
 
 	/**
 	 * It is called to draw a rectangle
@@ -128,19 +135,56 @@ public class PersonOverviewController {
 		rect.setFill(Color.CADETBLUE);
 		return rect;
 	}
+
+	private void setRectangleColor(Rectangle rect, Color color) {
+		rect.setFill(color);
+	}
+
 	/**
 	 * It is called to rotate the rectangle
 	 * 
 	 * @param rect
 	 *            The rectangle to be rotated
 	 */
-	public RotateTransition setRotateTransition(Rectangle rect) {
-		RotateTransition rottr = new RotateTransition(Duration.millis(2000), rect);
+	public RotateTransition getRotateTransition(Rectangle rect, int duracion) {
+		RotateTransition rottr = new RotateTransition(Duration.millis(duracion), rect);
 		rottr.setByAngle(180);
 		rottr.setCycleCount(3);
 		rottr.setAutoReverse(true);
 		return rottr;
 
+	}
+
+	/**
+	 * @param duracion
+	 *            determines the time it takes to rotate
+	 * @param rect
+	 *            determines which rectangle is going to be rotated
+	 */
+	private ScaleTransition getScaleTranstion(int duracion, Rectangle rect) {
+		sctr = new ScaleTransition(Duration.millis(duracion), rect);
+		sctr.setByX(1);
+		sctr.setByY(1);
+		sctr.setCycleCount(2);
+		sctr.setAutoReverse(true);
+		return sctr;
+	}
+
+	/**
+	 * @param duracion
+	 *            determines the time it takes to rotate
+	 * @param rect
+	 *            determines which rectangle is going to be rotated
+	 * @param color1
+	 *            color which the rectangle turns from
+	 * @param color2
+	 *            color which the rectangle turns to
+	 */
+	private FillTransition getFillTransition(int duracion, Rectangle rect, Color color1, Color color2) {
+		fltr = new FillTransition(Duration.millis(duracion), rect, color1, color2);
+		fltr.setCycleCount(1);
+		fltr.setAutoReverse(false);
+		return fltr;
 	}
 
 	/**
@@ -190,18 +234,13 @@ public class PersonOverviewController {
 	@FXML
 	private void handleDeletePerson() {
 		int selectedIndex = personTable.getSelectionModel().getSelectedIndex();
-
+		rect.setFill(Color.RED);
 		if (selectedIndex >= 0) {
 			personTable.getItems().remove(selectedIndex);
 		} else {
 			Dialogs di = Dialogs.create();
 			di.title("No selection").masthead("No person selected").message("Please select a person in the table")
 					.showWarning();
-			/*
-			 * Dialogs.create() .title("No selection") .masthead(
-			 * "No person selected") .message(
-			 * "Please select a person in the table") .showWarning();
-			 */
 		}
 	}
 
@@ -215,12 +254,9 @@ public class PersonOverviewController {
 		boolean okClicked = mainApp.showPersonEditDialog(tempPerson);
 		if (okClicked) {
 			mainApp.getPersonData().add(tempPerson);
+			fltr = getFillTransition(500, rect, Color.AQUA, Color.GREEN);
+			animarRectangulo(rottr, str, sctr, fltr);
 		}
-	}
-
-	@FXML
-	private void handlePanelPrueba() {
-
 	}
 
 	/**
@@ -236,18 +272,32 @@ public class PersonOverviewController {
 				if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {
 					handleEditPerson();
 				}
-
 			}
 		});
+	}
+
+	private void animarRectangulo(RotateTransition rottr, SequentialTransition st, ScaleTransition sctr,
+			FillTransition fltr) {
+		st.getChildren().removeAll(st.getChildren());
+		st.getChildren().addAll(rottr, sctr, fltr);
+		st.play();
 	}
 
 	@FXML
 	private void handleEditPerson() {
 		Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
 		if (selectedPerson != null) {
+
 			boolean okClicked = mainApp.showPersonEditDialog(selectedPerson);
 			if (okClicked) {
 				showPersonDetails(selectedPerson);
+				fltr = getFillTransition(500, rect, Color.AQUA, Color.GREEN);
+				animarRectangulo(rottr, str, sctr, fltr);
+
+			} else {
+				fltr = getFillTransition(500, rect, Color.AQUA, Color.AQUA);
+				animarRectangulo(rottr, str, sctr, fltr);
+
 			}
 
 		} else {

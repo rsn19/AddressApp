@@ -7,11 +7,11 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" prefHeight="800.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.makery.address.view.PersonEditDialogController" stylesheets="@./css/DarkTheme.css">
+<BorderPane fx:id="mainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" prefHeight="800.0" prefWidth="600.0" styleClass="background" stylesheets="@./css/DarkTheme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.makery.address.view.PersonEditDialogController">
    <center>
       <ScrollPane fitToHeight="true" fitToWidth="true" focusTraversable="false" prefViewportHeight="597.0" prefViewportWidth="600.0">
          <content>
-            <GridPane alignment="CENTER" prefHeight="408.0" prefWidth="603.0" styleClass="background" stylesheets="@DarkTheme.css">
+            <GridPane alignment="CENTER" prefHeight="408.0" prefWidth="603.0" styleClass="background" stylesheets="@./css/DarkTheme.css">
                <children>
                   <Label alignment="CENTER" opacity="0.33" text="First Name" />
                   <Label alignment="CENTER" opacity="0.33" text="Last Name" GridPane.rowIndex="1" />
@@ -19,12 +19,12 @@
                   <Label alignment="CENTER" opacity="0.33" text="City" GridPane.rowIndex="3" />
                   <Label alignment="CENTER" opacity="0.33" text="Postal code" GridPane.rowIndex="4" />
                   <Label alignment="CENTER" opacity="0.33" text="Birthday" GridPane.rowIndex="5" />
-                  <TextField fx:id="firstNameField" opacity="0.3" styleClass="background" GridPane.columnIndex="1" />
+                  <TextField fx:id="firstNameField" opacity="0.3" GridPane.columnIndex="1" />
                   <TextField fx:id="lastNameField" opacity="0.3" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextField fx:id="streetField" opacity="0.3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextField fx:id="cityField" opacity="0.3" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <TextField fx:id="postalCodeField" opacity="0.3" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <TextField fx:id="birthdayField" opacity="0.3" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <DatePicker fx:id="birthdayField" opacity="0.3" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                </children>
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="205.0" minWidth="10.0" prefWidth="189.0" />
@@ -49,7 +49,7 @@
       </ScrollPane>
    </center>
    <top>
-      <ImageView fitHeight="277.0" fitWidth="443.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+      <ImageView fx:id="imageViewEinstein" fitHeight="277.0" fitWidth="443.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
             <Image url="@images/foto.jpg" />
          </image>
