@@ -9,12 +9,13 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import org.controlsfx.dialog.Dialogs;
-
+//import AnimationTimerEx.MyTimer;
 import ch.makery.address.model.Person;
 import ch.makery.address.model.PersonListWrapper;
 import ch.makery.address.view.PersonEditDialogController;
 import ch.makery.address.view.PersonOverviewController;
 import ch.makery.address.view.RootLayoutController;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,6 +34,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -44,6 +46,8 @@ public class MainApp extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
+    private double opacity = 1;
+    private Label lbl;
   
     
     // ... AFTER THE OTHER VARIABLES ...
@@ -134,7 +138,9 @@ public class MainApp extends Application {
                 actiontarget.setFill(Color.FIREBRICK);
                 actiontarget.setText("Sign in button pressed");
                 
-                if (userTextField.getText().toString().equals("admin") && pwBox.getText().toString().equals("1234")) {
+                if (userTextField.getText().toString().equals("") &&
+                		pwBox.getText().toString().equals("")) {
+                	
                 	 initRootLayout();
 
                      showPersonOverview();
@@ -146,6 +152,27 @@ public class MainApp extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+    private class MyTimer extends AnimationTimer {
+
+        @Override
+        public void handle(long now) {
+        
+            doHandle();
+        }
+
+        private void doHandle() {
+
+            opacity -= 0.01;
+            lbl.opacityProperty().set(opacity);
+
+            if (opacity <= 0) {
+                stop();
+                System.out.println("Animation stopped");
+                initRootLayoutBienvenida();
+                showPersonOverview();
+            }
+        }
+    }
 
     
 
@@ -153,6 +180,22 @@ public class MainApp extends Application {
      * Initializes the root layout.
      */
     public void initRootLayout() {
+        
+            // Load root layout from fxml file.
+            StackPane root = new StackPane();
+            Scene scene = new Scene(root, 700, 400);
+            AnimationTimer timer = new MyTimer();
+            timer.start();
+            lbl = new Label("Bienvenido");
+            lbl.setFont(Font.font(48));
+            root.getChildren().add(lbl);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
+            
+        
+    }
+    public void initRootLayoutBienvenida() {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
@@ -178,6 +221,7 @@ public class MainApp extends Application {
         if (file != null) 
             loadPersonDataFromFile(file);
     }
+
 
     
     /**
@@ -235,6 +279,7 @@ public class MainApp extends Application {
             dialogStage.initOwner(primaryStage);
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
+            dialogStage.setResizable(false);
             
          // Set the person into the controller.
             PersonEditDialogController controller = loader.getController();
