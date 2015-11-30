@@ -49,7 +49,7 @@ public class PersonOverviewController {
 	private TableColumn<Person, String> lastNameColumn;
 
 	/**
-	 * param rect,str,sctr variables necesarias para la animación
+	 * param rect,str,sctr,rottr y filtr variables necesarias para la animación
 	 * 
 	 */
 	private Rectangle rect;
@@ -117,16 +117,12 @@ public class PersonOverviewController {
 		panelPrueba.getChildren().get(0).setLayoutY(-tamanioYpanelPrueba);
 		panelPrueba.getChildren().get(0).setLayoutX(-tamanioXpanelPrueba);
 
-		// panelPrueba.getOnMouseClicked();
-		// str.play();
-
 	}
 
 	/**
-	 * It is called to draw a rectangle
+	 * It is called to draw a <b>rectangle</b>
 	 * 
-	 * @param Color
-	 *            desired color for the rectangle
+	 * @param Color desired color for the rectangle
 	 */
 	public Rectangle drawRectangle(Color color) {
 		Rectangle rect = new Rectangle(50, 50, 30, 30);
@@ -215,7 +211,6 @@ public class PersonOverviewController {
 			streetLabel.setText(person.getStreet());
 			postalCodeLabel.setText(Integer.toString(person.getPostalCode()));
 			cityLabel.setText(person.getCity());
-
 			birthdayLabel.setText(DateUtil.format(person.getBirthday()));
 		} else {
 			// Person is null, remove all the text.

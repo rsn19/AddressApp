@@ -65,7 +65,7 @@ public class PersonEditDialogController {
     private void initialize() {
     	System.out.println(mainBorderPane.getChildren().size());
     	System.out.println(mainBorderPane.getChildren().get(1).toString());
-    	imageViewEinstein.setEffect(new GaussianBlur(10));
+    	//imageViewEinstein.setEffect(new GaussianBlur(10));
     	initializeCeiling(mainBorderPane);
     	imageViewEinstein.setClip(ceiling);
     	
